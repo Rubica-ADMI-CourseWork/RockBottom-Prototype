@@ -5,10 +5,24 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Vector2 moveAmount;
-    public void Move(Vector2 movePosition)
+    public Vector2 MovementVector { private set; get; }
+    [SerializeField] float moveSpeed = 10f;
+    //reference to the MobileJoystick Component on the joystick Knob
+    [SerializeField] private MobileJoystick joystick;
+
+    private void Start()
     {
-        transform.position = movePosition;
+        joystick.OnMove += MoveCharacter;
+    }
+    private void Update()
+    {
+        transform.Translate(new Vector3(MovementVector.x * moveSpeed * Time.deltaTime,
+            MovementVector.y * moveSpeed * Time.deltaTime,transform.position.z));
+    }
+    public void MoveCharacter(Vector2 moveVector)
+    {
+        MovementVector = moveVector;
+        
     }
 
 }
